@@ -1,12 +1,16 @@
-package E07;
+package E07.model;
 
-public class Carta {
+public abstract class Carta {
 
 	private int numero;
+	private boolean vista;
 
 	public Carta(int pNumero) {
 		this.numero = pNumero;
+		this.vista = false;
 	}
+
+	/* GETTERS & SETTERS */
 
 	public int getNumero() {
 		return numero;
@@ -16,9 +20,12 @@ public class Carta {
 		this.numero = numero;
 	}
 
+	public void setVista(boolean vista) {
+		this.vista = vista;
+	}
+
 	public boolean getVista() {
-		// TODO Auto-generated method stub
-		return false;
+		return this.vista = !this.vista;
 	}
 
 }

@@ -1,6 +1,6 @@
-package E07;
+package E07.model;
 
-public class Diamant extends Carta{
+public class Diamant extends Carta {
 
 	public Diamant(int pNumero) {
 		super(pNumero);

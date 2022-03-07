@@ -1,4 +1,4 @@
-package E07;
+package E07.model;
 
 public class Pica extends Carta {
 
