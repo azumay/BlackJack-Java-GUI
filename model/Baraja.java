@@ -10,7 +10,6 @@ public class Baraja {
 	public Baraja() {
 		this.cartas = new Stack<Carta>();
 		generateBaraja();
-
 	}
 
 	
