@@ -3,64 +3,55 @@ package E07.model;
 import java.util.Collections;
 import java.util.Stack;
 
+import E07.error.ReportErrores;
+
 public class Baraja {
 
 	private Stack<Carta> cartas;
 
-	public Baraja() {
+	public Baraja() throws ReportErrores{
 		this.cartas = new Stack<Carta>();
-		generateBaraja();
+		this.generateBaraja();
 	}
 
 	
 	/* METODOS */
-	public void generateBaraja() {
+	public void generateBaraja() throws ReportErrores{
 
-		for (int i = 1; i < 14; i++) {
+		for(int i=0;i<4;i++) {
+			for(int j=1;j<14;j++) {
+				switch(i) {
+					case 0:
+						this.cartas.add(new Cor(j));
+						break;
 
-			this.generateCartas(i, "Cor");
-			this.generateCartas(i, "Diamant");
-			this.generateCartas(i, "Pica");
-			this.generateCartas(i, "Trebol");
-
+					case 1:
+						this.cartas.add(new Diamant(j));
+						break;
+					
+					case 2:
+						this.cartas.add(new Pica(j));
+						break;
+					
+					case 3:
+						this.cartas.add(new Trebol(j));
+						break;	
+				}
+			}
 		}
-		Collections.shuffle(cartas);
-
+		Collections.shuffle(this.cartas);
 	}
 
-	public void generateCartas(int num, String tipo) {
-		switch (tipo) {
-		case "Cor":
-			this.cartas.add(new Cor(num));
-			break;
-		case "Diamant":
-			this.cartas.add(new Diamant(num));
-			break;
-		case "Pica":
-			this.cartas.add(new Pica(num));
-			break;
-		case "Trebol":
-			this.cartas.add(new Trebol(num));
-			break;
-		default:
-			break;
-		}
-		
+	public int size() {
+		return this.cartas.size();
 	}
-
+	
 	
 	public Carta cogerCarta() {
-		return cartas.pop();
+		return this.cartas.pop();
 	}
 	
 	
 	
-	public Stack<Carta> getCartas() {
-		return cartas;
-	}
-
-	public void setCartas(Stack<Carta> cartas) {
-		this.cartas = cartas;
-	}
 
 }

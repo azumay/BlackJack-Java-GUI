@@ -5,15 +5,20 @@ import java.util.Stack;
 
 public class Jugador {
 	
+	private String nombre;
 	private Stack<Carta> cartas;
 
 	
 	/*CONSTRUCTORES*/
 
-	public Jugador(Baraja cartas) {
-		this.cartas.add(cartas.cogerCarta());
+	public Jugador(Baraja cartas, String name) {
+		this.nombre= name;
+		this.cartas = new Stack <Carta>();
+		Carta carta1 = cartas.cogerCarta();
+		Carta carta2 = cartas.cogerCarta();
 		
-		
+		this.cartas.push(carta1);
+		this.cartas.push(carta2);
 	}
 
 	public Jugador(Stack<Carta> cartas) {
@@ -48,6 +53,13 @@ public class Jugador {
 	@Override
 	public String toString() {
 		return "Jugador [cartas=" + cartas + "]";
+	}
+	public String getNombre() {
+		return nombre;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
 	}
 
 }

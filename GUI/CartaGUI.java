@@ -36,9 +36,9 @@ public class CartaGUI extends JFrame {
 		this.x = x;
 		this.y = (int) (this.x * 1.4);
 
-		File f = new File("./src/gui/baraja-poker.jpg");
+		File f = new File("src/E07/media/baraja-poker.jpg");
 		baralla = ImageIO.read(f);
-		f = new File("./src/gui/radera.jpg");
+		f = new File("src/E07/media/radera.png");
 		radera = ImageIO.read(f);
 	}
 
