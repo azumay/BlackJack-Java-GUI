@@ -67,19 +67,25 @@ public class GameGUI extends JFrame{
 	
 	private CartaGUI cartaGUI;
 	
+	private boolean seguir;
+	
+	private JDialog quieresCarta;
+	
 
 	/**
 	 * Constructor del juego
 	 * @throws IOException 
 	 */
 	public GameGUI() throws ReportErrores, IOException{
+		interfazJuego();
 		this.baraja = new Baraja();
 		this.grupier = new Jugador(this.baraja, "Grupier");
 		
 		this.jugadores = new ArrayList<Jugador>();
 		this.cartaGUI = new CartaGUI(100);
 		cartaGUI.setBounds(-5, 5, 101, 75);
-		interfazJuego();
+		
+		
 		
 		
 	}
@@ -318,12 +324,13 @@ public class GameGUI extends JFrame{
 			
 			muestraCartas();
 			
+			
 	}
 	
 	private void muestraCartas() {
 		int x = 40;
 		int y = 40;
-		int posPlayer = 1;
+		int asientoJugador = 1;
 	
 		JPanel crupier = (JPanel) this.panel_top.getComponent(2-1);
 	
@@ -334,7 +341,7 @@ public class GameGUI extends JFrame{
 		
 		for (Carta crupierCarta : grupier.getCartas()) {
 			Image cardImage = this.cartaGUI.getImatge(crupierCarta);
-			ImageIcon icon = new ImageIcon(cardImage);
+			ImageIcon icon = new ImageIcon(cardImage.getScaledInstance(70, 120, Image.SCALE_SMOOTH));
 
 			JLabel crupierZone = new JLabel("");
 			crupierZone.setSize(225, 315);
@@ -349,51 +356,112 @@ public class GameGUI extends JFrame{
 				for (Jugador jugador : this.jugadores) {
 					x = 40;
 					y = 40;
-					// Creamos y mostramos las cartas de los jugadores
+	
 					for (Carta item : jugador.getCartas()) {
-						// Generamos cada imagen y la asignamos a un icono
+						
 						Image cardImage = this.cartaGUI.getImatge(item);
-						ImageIcon icon = new ImageIcon(cardImage);
+						ImageIcon icon = new ImageIcon(cardImage.getScaledInstance(70, 120, Image.SCALE_SMOOTH));
 
-						// Creamos la posicion donde ire la iamgen de la carta y la colocamos en su
-						// lugar
-						JLabel playerCard = new JLabel("");
-						playerCard.setSize(225, 315);
-						playerCard.setBounds(x, y, 225, 315);
-						playerCard.setIcon(icon);
 
-						switch (posPlayer) {
+						JLabel cartaJugador = new JLabel("");
+						cartaJugador.setSize(50, 100);
+						cartaJugador.setBounds(x, y, 70, 120);
+						cartaJugador.setIcon(icon);
+
+						switch (asientoJugador) {
 						case 1:
-							this.panel_jugador1.add(playerCard);
+							this.panel_jugador1.add(cartaJugador);
 							break;
 						case 2:
-							this.panel_jugador2.add(playerCard);
+							this.panel_jugador2.add(cartaJugador);
 							break;
 						case 3:
-							this.panel_jugador3.add(playerCard);
+							this.panel_jugador3.add(cartaJugador);
 							break;
 						case 4:
-							this.panel_jugador4.add(playerCard);
+							this.panel_jugador4.add(cartaJugador);
 							break;
 						case 5:
-							this.panel_jugador5.add(playerCard);
+							this.panel_jugador5.add(cartaJugador);
 							break;
 						}
 
-						// Incrementamos las posiciones para ir colocando las cartas solapadas
+						
 						x += 30;
 						y += 30;
 					}
-					// Reiniciamos las variables para las siguientes 2 cartas
+					
 					x = 40;
 					y = 40;
-					posPlayer += 1;
-					// player.getCards().stream().forEach(item->this.cardGUI.getImatge(item));
+					asientoJugador += 1;
+					
 				}
-				posPlayer = 0;
+				asientoJugador = 0;
+				
+				pedirCarta();
+			
 	}
-
 	
+	public void pedirCarta () {
+		
+		
+		JLabel preguntaMasCarta = new JLabel("¿Quieres otra carta?");
+		
+		
+		this.quieresCarta = new JDialog(this.frame);
+		quieresCarta.setModal(true);
+		quieresCarta.setSize(250, 100);
+		quieresCarta.getContentPane().setLayout(new GridLayout(3, 0, 10, 10));
+		quieresCarta.getContentPane().add(preguntaMasCarta);
+
+		this.seguir = true;
+
+		/*POSICIONAMIENTO AUTO DE LA VENTANA quieresCarta*/
+		
+		Dimension heightNJ, widthNJ;
+
+		heightNJ = Toolkit.getDefaultToolkit().getScreenSize();
+		widthNJ = this.dialogNJ.getSize();
+		
+		this.quieresCarta.setLocation(((heightNJ.width - widthNJ.width) / 2), (heightNJ.height - widthNJ.height) / 2);
+
+		//Botones para pedir mas cartas
+		JButton btn_si = new JButton("Si, por favor!");
+		btn_si.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				seguir=true;
+				quieresCarta.dispose();
+			}
+		});
+		quieresCarta.getContentPane().add(btn_si);
+		
+		JButton btn_no = new JButton("No, gracias");
+		btn_no.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				seguir=false;
+				quieresCarta.dispose();
+			}
+		});
+		quieresCarta.getContentPane().add(btn_no);
+	
+			for (int i = 0; i<numJugadores;i++) {
+			
+				while (this.seguir) {
+					quieresCarta.setVisible(true);
+					if (this.seguir && this.baraja.size()>0) {
+						Carta toAdd = this.baraja.cogerCarta();
+						this.jugadores.get(i).setCartas(toAdd);
+					}else if(!this.seguir && this.baraja.size()<=0){
+						this.seguir=false;
+						JOptionPane.showMessageDialog(null, "Se han acabado las cartas", "Fin del juego",JOptionPane.INFORMATION_MESSAGE);
+					}else {
+						this.seguir=false;
+					}
+				}
+				this.seguir=true;
+			}
+
+	}
 	/*GETTERS & SETTERS*/
 	
 	public JFrame getFrame() {
